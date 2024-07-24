@@ -1,10 +1,13 @@
 package com.mmendoza.junit5.domain;
 import com.mmendoza.junit5.exception.DineroInsuficienteException;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Timeout;
 import org.junit.jupiter.api.condition.EnabledOnOs;
 import org.junit.jupiter.api.condition.OS;
 
 import java.math.BigDecimal;
+import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.*; /*metodos de assertions*/
 
@@ -72,4 +75,14 @@ class CuentaTest {
     void testSoloWindows(){
 
     }
+
+    /*@Nested
+    class testTimeOut{
+        @Test
+        @Timeout(value = 1000,unit = TimeUnit.MILLISECONDS)
+        void pruebaTImeOut2() throws InterruptedException {
+            TimeUnit.MILLISECONDS.sleep(1100);
+        }
+    }*/
+
 }
