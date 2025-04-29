@@ -4,7 +4,6 @@ import com.mmendoza.mockito.bussines.services.IExamenService;
 import com.mmendoza.mockito.domain.entity.Examen;
 import com.mmendoza.mockito.persistence.repository.IExamenRepository;
 import com.mmendoza.mockito.persistence.repository.IPreguntaRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,27 +11,34 @@ import java.util.List;
 @Service
 public class ExamenServiceImpl implements IExamenService {
 
-    private IExamenRepository examenRepository;
+    private final IExamenRepository examenRepository;
+    private final IPreguntaRepository preguntaRepository;
 
-    private IPreguntaRepository preguntaRepository;
-
-    public ExamenServiceImpl(IExamenRepository examenRepository, IPreguntaRepository preguntaRepository) {
+    public ExamenServiceImpl(IExamenRepository examenRepository,
+            IPreguntaRepository preguntaRepository) {
         this.examenRepository = examenRepository;
         this.preguntaRepository = preguntaRepository;
     }
 
-
     @Override
     public Examen findExamenPorNombre(String nombre) {
-        return examenRepository.findAll().
-                stream().filter(e -> e.getNombre().equals(nombre))
-                .findFirst().orElse(null);
+        return examenRepository.findAll()
+                .stream()
+                .filter(e -> e.getNombre().equals(nombre))
+                .findFirst()
+                .orElse(null);
     }
 
     @Override
     public Examen findExamenPorNombreConPreguntas(String nombre) {
         Examen examen = findExamenPorNombre(nombre);
-        List <String> preguntas = preguntaRepository.findPreguntasPorExamenId(examen.getId());
+        if (examen == null) {
+            return null;
+        }
+
+        List<String> preguntas = preguntaRepository
+                .findPreguntasPorExamenId(examen.getId());
+
         return Examen.builder()
                 .id(examen.getId())
                 .nombre(examen.getNombre())
@@ -42,10 +48,10 @@ public class ExamenServiceImpl implements IExamenService {
 
     @Override
     public Examen save(Examen examen) {
-        if (!examen.getPreguntas().isEmpty()){
-            preguntaRepository.saveAll(examen.getPreguntas()); /*guardo mis preguntas*/
+        List<String> listaPreguntas = examen.getPreguntas();
+        if (listaPreguntas != null && !listaPreguntas.isEmpty()) {
+            preguntaRepository.saveAll(listaPreguntas);
         }
-        return examenRepository.save(examen); /*guarda el examen*/
+        return examenRepository.save(examen);
     }
-
 }

@@ -8,5 +8,4 @@ import java.util.List;
 public interface IExamenRepository {
     Examen save(Examen examen);
     List <Examen> findAll();
-
 }

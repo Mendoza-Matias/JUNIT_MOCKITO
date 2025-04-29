@@ -7,14 +7,15 @@ import java.util.List;
 public class Banco {
 
     private String nombre;
-
     private List<Cuenta> cuentas;
 
-    public Banco (String nombre) {
+    // Constructor
+    public Banco(String nombre) {
         this.nombre = nombre;
         this.cuentas = new ArrayList<>();
     }
 
+    // Getters y Setters
     public String getNombre() {
         return nombre;
     }
@@ -31,13 +32,15 @@ public class Banco {
         this.cuentas = cuentas;
     }
 
-    public void addCuenta(Cuenta cuenta){
+    // Agregar una cuenta al banco
+    public void addCuenta(Cuenta cuenta) {
         this.cuentas.add(cuenta);
         cuenta.setBanco(this);
     }
 
-    public void transferir(Cuenta origen, Cuenta destino, BigDecimal monto){
-        origen.debito(monto); /*retira el dinero*/
-        destino.credito(monto); /*deposita el dinero a la cuenta destino*/
+    // Transferencia entre cuentas
+    public void transferir(Cuenta origen, Cuenta destino, BigDecimal monto) {
+        origen.debito(monto); // Retira el dinero de la cuenta origen
+        destino.credito(monto); // Deposita el dinero en la cuenta destino
     }
 }

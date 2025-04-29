@@ -1,21 +1,21 @@
 package com.mmendoza.junit5.domain;
-import com.mmendoza.junit5.exception.DineroInsuficienteException;
 
+import com.mmendoza.junit5.exception.DineroInsuficienteException;
 import java.math.BigDecimal;
 
 public class Cuenta {
 
     private String persona;
-
     private BigDecimal saldo;
-
     private Banco banco;
 
+    // Constructor
     public Cuenta(String persona, BigDecimal saldo) {
         this.persona = persona;
         this.saldo = saldo;
     }
 
+    // Getters y Setters
     public String getPersona() {
         return persona;
     }
@@ -32,19 +32,6 @@ public class Cuenta {
         this.saldo = saldo;
     }
 
-    /*metodo para debitar saldo - quita dinero*/
-    public void debito(BigDecimal saldo) {
-        BigDecimal nuevoSaldo = this.saldo.subtract(saldo);
-        if(nuevoSaldo.compareTo(BigDecimal.ZERO) < 0){ /*si es -1 entonces es verdadero*/
-            throw new DineroInsuficienteException("Dinero insuficiente en la cuenta");
-        }
-        this.saldo = nuevoSaldo;
-    }
-    /*metodo para acreditar saldo - suma dinero*/
-    public void credito(BigDecimal saldo) {
-        this.saldo = this.saldo.add(saldo); /*realizar de esta manera porque BigDecimal es inmutable*/
-    }
-
     public Banco getBanco() {
         return banco;
     }
@@ -53,15 +40,28 @@ public class Cuenta {
         this.banco = banco;
     }
 
+    // Método para debitar saldo (retirar dinero)
+    public void debito(BigDecimal monto) {
+        BigDecimal nuevoSaldo = this.saldo.subtract(monto);
+        if (nuevoSaldo.compareTo(BigDecimal.ZERO) < 0) {
+            throw new DineroInsuficienteException("Dinero insuficiente en la cuenta");
+        }
+        this.saldo = nuevoSaldo;
+    }
+
+    // Método para acreditar saldo (depositar dinero)
+    public void credito(BigDecimal monto) {
+        this.saldo = this.saldo.add(monto);
+    }
+
+    // Equals basado en persona y saldo
     @Override
     public boolean equals(Object obj) {
-        /*si el objeto no es nulo*/
-        if (!(obj instanceof Cuenta)){
+        if (!(obj instanceof Cuenta)) {
             return false;
         }
         Cuenta c = (Cuenta) obj;
-        /*si los datos no son nulos*/
-        if(this.persona == null || this.saldo == null){
+        if (this.persona == null || this.saldo == null) {
             return false;
         }
         return this.persona.equals(c.getPersona()) && this.saldo.equals(c.getSaldo());
