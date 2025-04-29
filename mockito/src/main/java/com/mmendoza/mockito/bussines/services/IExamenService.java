@@ -5,10 +5,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface IExamenService {
-
     Examen findExamenPorNombre(String nombre);
-
     Examen findExamenPorNombreConPreguntas(String nombre);
-
     Examen save(Examen examen);
 }

@@ -9,12 +9,10 @@ import java.util.List;
 
 @Getter
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Examen {
-
     private Long id;
-
     private String nombre;
-
-    private List <String> preguntas;
-
+    private List<String> preguntas;
 }
